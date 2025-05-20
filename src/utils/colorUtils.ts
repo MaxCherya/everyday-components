@@ -54,6 +54,22 @@ export function isLightColor(hex: string): boolean {
 }
 
 
+export function getDisabledStyleFrom(baseColor: string): React.CSSProperties {
+    const disabledBg = adjustBrightness(baseColor, +30);
+    const disabledText = isLightColor(disabledBg) ? '#9ca3af' : '#d1d5db';
+    const border = adjustBrightness(baseColor, +50);
+
+    return {
+        backgroundColor: disabledBg,
+        color: disabledText,
+        border: `1px solid ${border}`,
+        cursor: 'not-allowed',
+        opacity: 0.6,
+    };
+}
+
+
+
 /**
  * Function to determine the best matching Tailwind-style inline color styles
  * using complementary or default rules based on user input.
@@ -67,6 +83,7 @@ export function isLightColor(hex: string): boolean {
  * - secondaryStyle: inline style object for secondary button
  * - primaryHover: backgroundColor (string) for hover
  * - secondaryHover: backgroundColor (string) for hover
+ * - disabledStyle: includes 4 css propertires to overwrite during disabled process
  */
 export const getColors = (
     customPrimaryColor?: string,
@@ -76,8 +93,9 @@ export const getColors = (
     secondaryStyle: React.CSSProperties;
     primaryHover?: string;
     secondaryHover?: string;
+    disabledStyle: React.CSSProperties;
 } => {
-    // Scenario 1: Only Primary Provided
+    // Scenario 1: Only Primary
     if (customPrimaryColor && !customSecondaryColor) {
         const hover = adjustBrightness(customPrimaryColor, -20);
         const textColor = isLightColor(customPrimaryColor) ? '#000' : '#fff';
@@ -87,10 +105,11 @@ export const getColors = (
             secondaryStyle: { backgroundColor: customPrimaryColor, color: textColor },
             primaryHover: hover,
             secondaryHover: hover,
+            disabledStyle: getDisabledStyleFrom(customPrimaryColor),
         };
     }
 
-    // Scenario 2: Only Secondary Provided
+    // Scenario 2: Only Secondary
     if (!customPrimaryColor && customSecondaryColor) {
         const hover = adjustBrightness(customSecondaryColor, -20);
         const textColor = isLightColor(customSecondaryColor) ? '#000' : '#fff';
@@ -100,6 +119,7 @@ export const getColors = (
             secondaryStyle: { backgroundColor: customSecondaryColor, color: textColor },
             primaryHover: '#1e40af',
             secondaryHover: hover,
+            disabledStyle: getDisabledStyleFrom(customSecondaryColor),
         };
     }
 
@@ -107,7 +127,6 @@ export const getColors = (
     if (customPrimaryColor && customSecondaryColor) {
         const primaryHover = adjustBrightness(customPrimaryColor, -20);
         const secondaryHover = adjustBrightness(customSecondaryColor, -20);
-
         const primaryText = isLightColor(customPrimaryColor) ? '#000' : '#fff';
         const secondaryText = isLightColor(customSecondaryColor) ? '#000' : '#fff';
 
@@ -116,14 +135,16 @@ export const getColors = (
             secondaryStyle: { backgroundColor: customSecondaryColor, color: secondaryText },
             primaryHover,
             secondaryHover,
+            disabledStyle: getDisabledStyleFrom(customPrimaryColor),
         };
     }
 
-    // Scenario 4: Nothing Provided (default Tailwind-style colors)
+    // Default
     return {
         primaryStyle: { backgroundColor: '#2563eb', color: '#fff' },
         secondaryStyle: { backgroundColor: '#e5e7eb', color: '#000' },
         primaryHover: '#1e40af',
         secondaryHover: '#d1d5db',
+        disabledStyle: getDisabledStyleFrom('#2563eb'),
     };
 };
