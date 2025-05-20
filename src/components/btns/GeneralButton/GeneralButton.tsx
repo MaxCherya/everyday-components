@@ -1,4 +1,4 @@
-import React, { useState, type ElementType, type ReactNode } from 'react';
+import React, { useEffect, useState, type ElementType, type ReactNode } from 'react';
 import { getColors } from '../../../utils/colorUtils';
 import { useSmartClick } from '../../../hooks/useSmartClick';
 
@@ -13,7 +13,6 @@ export interface GeneralButtonProps extends React.ButtonHTMLAttributes<HTMLButto
     as?: 'button' | 'a' | ElementType;
     href?: string; // required if `as: 'a'`
     target?: string;
-    customSpinner?: ReactNode;
     ariaLabel?: string;
     debounceMs?: number; // in ms
     throttleMs?: number; // in ms
@@ -36,7 +35,6 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
     as: Component = 'button',
     href,
     target,
-    customSpinner,
     ariaLabel,
     debounceMs,
     throttleMs,
@@ -52,9 +50,23 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
 
     // ===================================== STATES ================================= //
     const [isHover, setIsHover] = useState(false);
+    const [dots, setDots] = useState(1);
+    const [_time, setTime] = useState(new Date())
     const colorStyle = getColors(customPrimaryColor, customSecondaryColor);
     // ============================================================================== //
 
+
+    useEffect(() => {
+        if (!isLoading) return;
+
+        const interval = setInterval(() => {
+            setTime(new Date());
+
+            setDots((prev) => (prev >= 3 ? 1 : prev + 1));
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, [isLoading]);
 
 
     // ================================= OBJECTS ================================== //
@@ -100,7 +112,7 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
             onMouseLeave={() => setIsHover(false)}
             target={target}
             onClick={clickHandler}
-            className={`px-2 py-1 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled || isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            className={`px-4 py-1 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled || isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
             aria-label={ariaLabel}
             style={
                 disabled || isLoading || isLocked
@@ -115,8 +127,8 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
                             : styles[variant].first_color,
 
                         border: `1px solid ${isHover
-                                ? styles[variant].first_backgroundColor
-                                : styles[variant].second_backgroundColor
+                            ? styles[variant].first_backgroundColor
+                            : styles[variant].second_backgroundColor
                             }`,
                         cursor: 'pointer',
                         opacity: 1,
@@ -127,8 +139,15 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
             {...rest}
         >
             {iconLeft && <span className={`mr-2 ${sizes[size]}`}>{iconLeft}</span>}
-            {children}{isLoading && '...'}
+            {children}
             {iconRight && <span className={`ml-2 ${sizes[size]}`}>{iconRight}</span>}
+            {isLoading || isDebounced || isThrottled &&
+                <span className="inline-block w-[1.5ch] ml-2 text-left align-middle">
+                    {Array.from({ length: dots }).map((_, index) => (
+                        <span key={index}>.</span>
+                    ))}
+                </span>
+            }
         </Component>
     );
 };
