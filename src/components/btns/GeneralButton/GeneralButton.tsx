@@ -56,18 +56,6 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
     // ============================================================================== //
 
 
-    useEffect(() => {
-        if (!isLoading) return;
-
-        const interval = setInterval(() => {
-            setTime(new Date());
-
-            setDots((prev) => (prev >= 3 ? 1 : prev + 1));
-        }, 500);
-
-        return () => clearInterval(interval);
-    }, [isLoading]);
-
 
     // ================================= OBJECTS ================================== //
 
@@ -104,6 +92,17 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
 
     const { handler: clickHandler, isThrottled, isDebounced, isLocked } = useSmartClick({ onClick, debounceMs, throttleMs, onDebounceStart, onThrottleStart });
 
+    useEffect(() => {
+        if (!isLoading && !isDebounced && !isThrottled) return;
+
+        const interval = setInterval(() => {
+            setTime(new Date());
+            setDots((prev) => (prev >= 3 ? 1 : prev + 1));
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, [isLoading, isThrottled, isDebounced]);
+
     return (
         <Component
             disabled={disabled || isLoading || isLocked}
@@ -112,7 +111,7 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
             onMouseLeave={() => setIsHover(false)}
             target={target}
             onClick={clickHandler}
-            className={`px-4 py-1 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled || isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            className={`relative px-8 py-1 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled || isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
             aria-label={ariaLabel}
             style={
                 disabled || isLoading || isLocked
@@ -141,13 +140,14 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
             {iconLeft && <span className={`mr-2 ${sizes[size]}`}>{iconLeft}</span>}
             {children}
             {iconRight && <span className={`ml-2 ${sizes[size]}`}>{iconRight}</span>}
-            {isLoading || isDebounced || isThrottled &&
-                <span className="inline-block w-[1.5ch] ml-2 text-left align-middle">
-                    {Array.from({ length: dots }).map((_, index) => (
-                        <span key={index}>.</span>
-                    ))}
-                </span>
-            }
+            <span
+                className={`absolute inline-block w-[1.5ch] ml-2 text-left align-middle ${isLoading || isDebounced || isThrottled ? 'visible' : 'invisible'
+                    }`}
+            >
+                {Array.from({ length: dots }).map((_, index) => (
+                    <span key={index}>.</span>
+                ))}
+            </span>
         </Component>
     );
 };
