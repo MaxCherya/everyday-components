@@ -1,54 +1,102 @@
-# React + TypeScript + Vite
+# 🧩 everyday-components
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A flexible component library for modern web apps, built with **React + TypeScript**.  
+Includes reusable, customizable UI components that work with or without Tailwind CSS.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📦 Installation
 
-## Expanding the ESLint configuration
+```bash
+npm install everyday-components
+````
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+or
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+yarn add everyday-components
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ⚙️ Requirements
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+* **React** 17 or 18
+* Tailwind CSS
+---
+
+## 🚀 Usage: GeneralButton
+
+```tsx
+import { GeneralButton } from 'everyday-components';
+
+const App = () => (
+  <>
+    <GeneralButton variant="primary">
+      Default Primary
+    </GeneralButton>
+
+    <GeneralButton
+      variant="secondary"
+      size="lg"
+      iconLeft="🔥"
+      iconRight="➡️"
+      customPrimaryColor="#CD3514"
+      customSecondaryColor="#F4F4F4"
+      className="mt-4"
+    >
+      Custom Colors
+    </GeneralButton>
+  </>
+);
 ```
+
+---
+
+## 🧩 Props
+
+| Prop                   | Type                                                                     | Description                         |
+| ---------------------- | ------------------------------------------------------------------------ | ----------------------------------- |
+| `variant`              | `"primary"` \| `"secondary"`                                             | Button variant style                |
+| `size`                 | `"xs"` \| `"sm"` \| `"base"` \| `"md"` \| `"lg"` \| `"xl"` \| `"custom"` | Size preset                         |
+| `iconLeft`             | `ReactNode` \| `string`                                                  | Icon or emoji before text           |
+| `iconRight`            | `ReactNode` \| `string`                                                  | Icon or emoji after text            |
+| `fullWidth`            | `boolean`                                                                | Makes button expand to full width   |
+| `customPrimaryColor`   | `string (hex)`                                                           | Custom background color             |
+| `customSecondaryColor` | `string (hex)`                                                           | Custom hover/border color           |
+| `as`                   | `"button"` \| `"a"` \| `ElementType`                                     | Element to render                   |
+| `href`                 | `string`                                                                 | Used when `as="a"`                  |
+| `onClick`              | `() => void`                                                             | Click handler                       |
+| `isLoading`            | `boolean`                                                                | Shows a loading spinner or ellipsis |
+| `disabled`             | `boolean`                                                                | Disables the button                 |
+| `debounceMs`           | `number`                                                                 | Debounces click event               |
+| `className`            | `string`                                                                 | Additional CSS or Tailwind classes  |
+| `children`             | `ReactNode`                                                              | Button content (text or JSX)        |
+
+---
+
+## 🎨 Dynamic Color Logic
+
+* If only `customPrimaryColor` is provided → used for background, hover, and text
+* If only `customSecondaryColor` is provided → used for border, hover, and text
+* If both are provided → hover swaps `primary <-> secondary` colors for background, text, and border
+* Uses **inline styles**, so no Tailwind safelist or config is needed
+
+---
+
+## ✅ Live Preview (Local Dev)
+
+To develop or preview locally:
+
+```bash
+npm run dev
+```
+
+---
+
+## 📘 License
+
+MIT — free to use in personal or commercial projects.
+Please credit the author or project in public usage if possible.
+
+---

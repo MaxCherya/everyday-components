@@ -9,7 +9,7 @@ const App: React.FC = () => {
 
             <GeneralButton variant="primary" size='xl' iconLeft='😆'>Primary</GeneralButton>
 
-            <GeneralButton customPrimaryColor='#3e3e66' variant="primary" size='sm' className='ml-5' iconRight='✏️'>
+            <GeneralButton customPrimaryColor='#02E23A' customSecondaryColor='#F10808' variant="primary" size='sm' className='ml-5' iconRight='✏️'>
                 Secondary
             </GeneralButton>
         </div>

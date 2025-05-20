@@ -55,7 +55,7 @@ export function isLightColor(hex: string): boolean {
 
 
 /**
- * Function to determine the best matching Tailwind color classes
+ * Function to determine the best matching Tailwind-style inline color styles
  * using complementary or default rules based on user input.
  *
  * Accepts:
@@ -63,8 +63,10 @@ export function isLightColor(hex: string): boolean {
  * - customSecondaryColor (hex string)
  *
  * Returns:
- * - primaryStyle: Tailwind utility string for the primary button
- * - secondaryStyle: Tailwind utility string for the secondary button
+ * - primaryStyle: inline style object for primary button
+ * - secondaryStyle: inline style object for secondary button
+ * - primaryHover: backgroundColor (string) for hover
+ * - secondaryHover: backgroundColor (string) for hover
  */
 export const getColors = (
     customPrimaryColor?: string,
@@ -75,6 +77,7 @@ export const getColors = (
     primaryHover?: string;
     secondaryHover?: string;
 } => {
+    // Scenario 1: Only Primary Provided
     if (customPrimaryColor && !customSecondaryColor) {
         const hover = adjustBrightness(customPrimaryColor, -20);
         const textColor = isLightColor(customPrimaryColor) ? '#000' : '#fff';
@@ -87,7 +90,36 @@ export const getColors = (
         };
     }
 
-    // Default
+    // Scenario 2: Only Secondary Provided
+    if (!customPrimaryColor && customSecondaryColor) {
+        const hover = adjustBrightness(customSecondaryColor, -20);
+        const textColor = isLightColor(customSecondaryColor) ? '#000' : '#fff';
+
+        return {
+            primaryStyle: { backgroundColor: '#2563eb', color: '#fff' },
+            secondaryStyle: { backgroundColor: customSecondaryColor, color: textColor },
+            primaryHover: '#1e40af',
+            secondaryHover: hover,
+        };
+    }
+
+    // Scenario 3: Both Provided
+    if (customPrimaryColor && customSecondaryColor) {
+        const primaryHover = adjustBrightness(customPrimaryColor, -20);
+        const secondaryHover = adjustBrightness(customSecondaryColor, -20);
+
+        const primaryText = isLightColor(customPrimaryColor) ? '#000' : '#fff';
+        const secondaryText = isLightColor(customSecondaryColor) ? '#000' : '#fff';
+
+        return {
+            primaryStyle: { backgroundColor: customPrimaryColor, color: primaryText },
+            secondaryStyle: { backgroundColor: customSecondaryColor, color: secondaryText },
+            primaryHover,
+            secondaryHover,
+        };
+    }
+
+    // Scenario 4: Nothing Provided (default Tailwind-style colors)
     return {
         primaryStyle: { backgroundColor: '#2563eb', color: '#fff' },
         secondaryStyle: { backgroundColor: '#e5e7eb', color: '#000' },

@@ -93,14 +93,25 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             target={target}
-            className={`px-2 py-1 transition-all duration-200 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled ? 'cursor-not-allowed bg-gray-500 text-gray-400' : 'cursor-pointer'}`}
+            className={`px-2 py-1 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled ? 'cursor-not-allowed bg-gray-500 text-gray-400' : 'cursor-pointer'}`}
             aria-label={ariaLabel}
             style={{
                 backgroundColor: isHover
-                    ? styles[variant].first_hover
+                    ? styles[variant].second_backgroundColor
                     : styles[variant].first_backgroundColor,
-                color: styles[variant].first_color,
+
+                color: isHover
+                    ? styles[variant].second_color
+                    : styles[variant].first_color,
+
+                border: `1px solid ${isHover
+                    ? styles[variant].first_backgroundColor
+                    : styles[variant].second_backgroundColor
+                    }`,
+
+                transition: 'all 0.2s ease-in-out',
             }}
+
             {...rest}
         >
             {iconLeft && <span className={`mr-2 ${sizes[size]}`}>{iconLeft}</span>}
