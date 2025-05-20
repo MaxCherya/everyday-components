@@ -14,6 +14,7 @@ export interface GeneralButtonProps extends React.ButtonHTMLAttributes<HTMLButto
     href?: string; // required if `as: 'a'`
     target?: string;
     ariaLabel?: string;
+    noOutlines?: boolean;
     debounceMs?: number; // in ms
     throttleMs?: number; // in ms
     customPrimaryColor?: string; // in hex
@@ -36,6 +37,7 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
     href,
     target,
     ariaLabel,
+    noOutlines = false,
     debounceMs,
     throttleMs,
     customPrimaryColor,
@@ -125,7 +127,7 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
                             ? styles[variant].second_color
                             : styles[variant].first_color,
 
-                        border: `1px solid ${isHover
+                        border: noOutlines ? '0px' : `1px solid ${isHover
                             ? styles[variant].first_backgroundColor
                             : styles[variant].second_backgroundColor
                             }`,

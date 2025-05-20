@@ -25,62 +25,31 @@ yarn add everyday-components
 * Tailwind CSS
 ---
 
-## 🚀 Usage: GeneralButton
+## 🧩 Components
 
-```tsx
-import { GeneralButton } from 'everyday-components';
+Components are organized by category. Each one lives in its own folder and includes a local `README.md` for full documentation.
 
-const App = () => (
-  <>
-    <GeneralButton variant="primary">
-      Default Primary
-    </GeneralButton>
+### 🔘 Buttons
 
-    <GeneralButton
-      variant="secondary"
-      size="lg"
-      iconLeft="🔥"
-      iconRight="➡️"
-      customPrimaryColor="#CD3514"
-      customSecondaryColor="#F4F4F4"
-      className="mt-4"
-    >
-      Custom Colors
-    </GeneralButton>
-  </>
-);
-```
+| Component             | Description                                                                                      |
+|-----------------------|--------------------------------------------------------------------------------------------------|
+| [`GeneralButton`](./src/components/btns/GeneralButton/README.md) | A polymorphic, themeable button with icons, loading, debounce/throttle, and custom colors.              |
+| `IconButton`          | *(Coming soon)*                                                                                  |
+| `ToggleButton`        | *(Coming soon)*                                                                                  |
 
----
+### 🧱 Layout (coming soon)
 
-## 🧩 Props
+| Component       | Description         |
+|-----------------|---------------------|
+| `Stack`         | *(Coming soon)*     |
+| `Grid`          | *(Coming soon)*     |
 
-| Prop                   | Type                                                                     | Description                         |
-| ---------------------- | ------------------------------------------------------------------------ | ----------------------------------- |
-| `variant`              | `"primary"` \| `"secondary"`                                             | Button variant style                |
-| `size`                 | `"xs"` \| `"sm"` \| `"base"` \| `"md"` \| `"lg"` \| `"xl"` \| `"custom"` | Size preset                         |
-| `iconLeft`             | `ReactNode` \| `string`                                                  | Icon or emoji before text           |
-| `iconRight`            | `ReactNode` \| `string`                                                  | Icon or emoji after text            |
-| `fullWidth`            | `boolean`                                                                | Makes button expand to full width   |
-| `customPrimaryColor`   | `string (hex)`                                                           | Custom background color             |
-| `customSecondaryColor` | `string (hex)`                                                           | Custom hover/border color           |
-| `as`                   | `"button"` \| `"a"` \| `ElementType`                                     | Element to render                   |
-| `href`                 | `string`                                                                 | Used when `as="a"`                  |
-| `onClick`              | `() => void`                                                             | Click handler                       |
-| `isLoading`            | `boolean`                                                                | Shows a loading spinner or ellipsis |
-| `disabled`             | `boolean`                                                                | Disables the button                 |
-| `debounceMs`           | `number`                                                                 | Debounces click event               |
-| `className`            | `string`                                                                 | Additional CSS or Tailwind classes  |
-| `children`             | `ReactNode`                                                              | Button content (text or JSX)        |
+### 📦 Inputs (coming soon)
 
----
-
-## 🎨 Dynamic Color Logic
-
-* If only `customPrimaryColor` is provided → used for background, hover, and text
-* If only `customSecondaryColor` is provided → used for border, hover, and text
-* If both are provided → hover swaps `primary <-> secondary` colors for background, text, and border
-* Uses **inline styles**, so no Tailwind safelist or config is needed
+| Component       | Description         |
+|-----------------|---------------------|
+| `TextField`     | *(Coming soon)*     |
+| `Checkbox`      | *(Coming soon)*     |
 
 ---
 
