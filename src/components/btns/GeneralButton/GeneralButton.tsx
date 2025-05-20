@@ -1,5 +1,6 @@
-import React, { useEffect, useState, type ElementType, type ReactNode } from 'react';
+import React, { useState, type ElementType, type ReactNode } from 'react';
 import { getColors } from '../../../utils/colorUtils';
+import { useSmartClick } from '../../../hooks/useSmartClick';
 
 export interface GeneralButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'secondary';
@@ -15,9 +16,12 @@ export interface GeneralButtonProps extends React.ButtonHTMLAttributes<HTMLButto
     customSpinner?: ReactNode;
     ariaLabel?: string;
     debounceMs?: number; // in ms
+    throttleMs?: number; // in ms
     customPrimaryColor?: string; // in hex
     customSecondaryColor?: string; // in hex
     onClick?: () => void;
+    onThrottleStart?: () => void;
+    onDebounceStart?: () => void;
     className?: string;
 }
 
@@ -35,9 +39,12 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
     customSpinner,
     ariaLabel,
     debounceMs,
+    throttleMs,
     customPrimaryColor,
     customSecondaryColor,
     onClick,
+    onThrottleStart,
+    onDebounceStart,
     className = '',
     children,
     ...rest
@@ -49,11 +56,9 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
     // ============================================================================== //
 
 
-    // ===================================== FUNCS ================================== //
-    // ============================================================================== //
-
 
     // ================================= OBJECTS ================================== //
+
     const sizes = {
         xs: 'text-xs',
         sm: 'text-sm',
@@ -85,19 +90,20 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
 
     // ============================================================================ //
 
+    const { handler: clickHandler, isThrottled, isDebounced, isLocked } = useSmartClick({ onClick, debounceMs, throttleMs, onDebounceStart, onThrottleStart });
 
     return (
         <Component
-            disabled={disabled}
+            disabled={disabled || isLoading || isLocked}
             href={Component === 'a' ? href : undefined}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             target={target}
-            onClick={onClick}
-            className={`px-2 py-1 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            onClick={clickHandler}
+            className={`px-2 py-1 ${fullWidth ? 'w-full' : ''} ${sizes[size]} ${className} ${disabled || isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
             aria-label={ariaLabel}
             style={
-                disabled
+                disabled || isLoading || isLocked
                     ? colorStyle.disabledStyle
                     : {
                         backgroundColor: isHover
@@ -109,10 +115,9 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
                             : styles[variant].first_color,
 
                         border: `1px solid ${isHover
-                            ? styles[variant].first_backgroundColor
-                            : styles[variant].second_backgroundColor
+                                ? styles[variant].first_backgroundColor
+                                : styles[variant].second_backgroundColor
                             }`,
-
                         cursor: 'pointer',
                         opacity: 1,
                         transition: 'all 0.2s ease-in-out',
