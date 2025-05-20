@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GeneralButton } from './components/btns/GeneralButton';
+import { GeneralButton, ToggleButton } from './components';
 import './index.css'
 
 const App: React.FC = () => {
@@ -15,6 +15,8 @@ const App: React.FC = () => {
             <GeneralButton disabled={disabled} noOutlines customPrimaryColor='#02E23A' customSecondaryColor='#F10808' variant="primary" size='sm' className='ml-5' iconRight='✏️'>
                 Result
             </GeneralButton>
+
+            <ToggleButton offLabel='Turn Off' isToggled={disabled} size='base'>Turn On</ToggleButton>
         </div>
     );
 };
