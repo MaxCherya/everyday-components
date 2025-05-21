@@ -34,7 +34,7 @@ Components are organized by category. Each one lives in its own folder and inclu
 | Component             | Description                                                                                      |
 |-----------------------|--------------------------------------------------------------------------------------------------|
 | [`GeneralButton`](./src/components/btns/GeneralButton/README.md) | A polymorphic, themeable button with icons, loading, debounce/throttle, and custom colors.              |
-| [`ToggleButton`](./src/components/btns/GeneralButton/README.md)  | An adaptive toggle-style button component that can switch between two states                            |
+| [`ToggleButton`](./src/components/btns/ToggleButton/README.md)  | An adaptive toggle-style button component that can switch between two states                            |
 
 ### 🧱 Layout (coming soon)
 
