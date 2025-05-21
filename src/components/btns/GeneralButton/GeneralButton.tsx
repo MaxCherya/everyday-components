@@ -120,7 +120,7 @@ const GeneralButton: React.FC<GeneralButtonProps> = ({
                     ? colorStyle.disabledStyle
                     : {
                         backgroundColor: isHover
-                            ? styles[variant].second_backgroundColor
+                            ? variant === 'primary' ? styles[variant].second_hover : styles[variant].first_hover
                             : styles[variant].first_backgroundColor,
 
                         color: isHover
