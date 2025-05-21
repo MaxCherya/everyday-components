@@ -10,9 +10,9 @@ const App: React.FC = () => {
         <div className='p-20'>
             <h1 className='mb-20'>Everyday Components Test</h1>
 
-            <GeneralButton variant="primary" size='xl' throttleMs={1000} className='rounded-full' onClick={() => setDisabled(!disabled)}>Disable</GeneralButton>
+            <GeneralButton variant="primary" size='xl' debounceMs={150} className='rounded-full' onClick={() => setDisabled(!disabled)}>Disable</GeneralButton>
 
-            <GeneralButton disabled={disabled} noOutlines customPrimaryColor='#02E23A' customSecondaryColor='#F10808' variant="primary" size='sm' className='ml-5' iconRight='✏️'>
+            <GeneralButton disabled={disabled} noOutlines customPrimaryColor='#02E23A' variant="primary" size='sm' className='ml-5' iconRight='✏️'>
                 Result
             </GeneralButton>
 
