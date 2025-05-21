@@ -16,7 +16,7 @@ const App: React.FC = () => {
                 Result
             </GeneralButton>
 
-            <ToggleButton className='ml-20 rounded-2xl' customPrimaryColor='#02E23A' onClick={() => setDisabled(!disabled)} iconLeft='🥔' iconLeftAfter='🍟' throttleMs={3000} offLabel='Turn Off' isToggled={disabled} size='base'>Turn On</ToggleButton>
+            <ToggleButton className='ml-20 rounded-2xl' customPrimaryColor='#02E23A' noOutlines onClick={() => setDisabled(!disabled)} iconLeft='🥔' iconLeftAfter='🍟' throttleMs={3000} offLabel='Turn Off' isToggled={disabled} size='base'>Turn On</ToggleButton>
         </div>
     );
 };

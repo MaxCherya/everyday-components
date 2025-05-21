@@ -35,7 +35,7 @@ const App = () => (
 | Prop                   | Type                                                                     | Default  | Description                                       |
 | ---------------------- | ------------------------------------------------------------------------ | -------- | ------------------------------------------------- |
 | `size`                 | `"xs"` \| `"sm"` \| `"base"` \| `"md"` \| `"lg"` \| `"xl"` \| `"custom"` | `"base"` | Text size of the button                           |
-| `isLoading`            | `boolean`                                                                | `false`  | Shows animated dots (⠁⠂⠄) while locked            |
+| `isLoading`            | `boolean`                                                                | `false`  | Shows animated dots (⠁⠂⠄) while locked           |
 | `fullWidth`            | `boolean`                                                                | `false`  | Makes button span the full width of its container |
 | `iconLeft`             | `ReactNode` \| `string`                                                  | `—`      | Icon/emoji before text (when toggled `on`)        |
 | `iconRight`            | `ReactNode` \| `string`                                                  | `—`      | Icon/emoji after text (when toggled `on`)         |
@@ -46,6 +46,7 @@ const App = () => (
 | `customPrimaryColor`   | `string (hex)`                                                           | `—`      | Main color for the "on" state                     |
 | `customSecondaryColor` | `string (hex)`                                                           | `—`      | Main color for the "off" state                    |
 | `debounceMs`           | `number`                                                                 | `—`      | Debounce delay for click events                   |
+| `noOutlines`           | `boolean`                                                                | `false`  | Removes default border styling                    |
 | `throttleMs`           | `number`                                                                 | `—`      | Throttle lock duration                            |
 | `onClick`              | `() => void`                                                             | `—`      | Main click handler                                |
 | `onThrottleStart`      | `() => void`                                                             | `—`      | Triggered when throttle lock begins               |

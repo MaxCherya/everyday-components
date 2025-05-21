@@ -12,6 +12,7 @@ export interface ToggleButtonProps extends React.ButtonHTMLAttributes<HTMLButton
     iconLeftAfter?: ReactNode | string;
     isToggled: boolean;
     offLabel: string,
+    noOutlines?: boolean,
     customPrimaryColor?: string; // in hex
     customSecondaryColor?: string; // in hex
     debounceMs?: number; // in ms
@@ -30,6 +31,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
     iconRight,
     iconRightAfter,
     iconLeftAfter,
+    noOutlines = false,
     isToggled,
     offLabel,
     customPrimaryColor,
@@ -74,17 +76,14 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
         return () => clearInterval(interval);
     }, [isLoading, isLocked, isThrottled, isDebounced])
 
-    console.log(colorStyle.primaryStyle)
-    console.log(colorStyle.secondaryStyle)
-
     return (
         <button
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={clickHandler}
             className={`px-8 cursor-pointer py-1 ${sizes[size]} ${fullWidth && 'w-full'} transition-all duration-300 ${className}`}
-            style={
-                isLoading || isLocked || isThrottled || isDebounced
+            style={{
+                ...(isLoading || isLocked || isThrottled || isDebounced
                     ? colorStyle.disabledStyle
                     : isHover
                         ? isToggled
@@ -98,8 +97,14 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
                             }
                         : isToggled
                             ? colorStyle.primaryStyle
-                            : colorStyle.secondaryStyle
-            }
+                            : colorStyle.secondaryStyle),
+                border: noOutlines
+                    ? '0px'
+                    : `1px solid ${isHover
+                        ? colorStyle.secondaryStyle.backgroundColor
+                        : colorStyle.primaryStyle.backgroundColor
+                    }`
+            }}
             {...rest}
         >
             {isToggled ? children : offLabel}
