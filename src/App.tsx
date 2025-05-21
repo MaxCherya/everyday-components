@@ -12,11 +12,11 @@ const App: React.FC = () => {
 
             <GeneralButton variant="primary" size='xl' throttleMs={1000} className='rounded-full' onClick={() => setDisabled(!disabled)}>Disable</GeneralButton>
 
-            <GeneralButton disabled={disabled} noOutlines customPrimaryColor='#02E23A' customSecondaryColor='#F10808' variant="primary" size='sm' className='ml-5' iconRight='✏️'>
+            <GeneralButton disabled={disabled} noOutlines customPrimaryColor='#02E23A' variant="primary" size='sm' className='ml-5' iconRight='✏️'>
                 Result
             </GeneralButton>
 
-            <ToggleButton offLabel='Turn Off' isToggled={disabled} size='base'>Turn On</ToggleButton>
+            <ToggleButton className='ml-20 rounded-2xl' customPrimaryColor='#02E23A' onClick={() => setDisabled(!disabled)} iconLeft='🥔' iconLeftAfter='🍟' throttleMs={3000} offLabel='Turn Off' isToggled={disabled} size='base'>Turn On</ToggleButton>
         </div>
     );
 };

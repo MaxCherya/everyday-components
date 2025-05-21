@@ -97,29 +97,35 @@ export const getColors = (
 } => {
     // Scenario 1: Only Primary
     if (customPrimaryColor && !customSecondaryColor) {
-        const hover = adjustBrightness(customPrimaryColor, -20);
-        const textColor = isLightColor(customPrimaryColor) ? '#000' : '#fff';
+        const secondaryColor = getComplementary(customPrimaryColor);
+        const primaryHover = adjustBrightness(customPrimaryColor, -20);
+        const secondaryHover = adjustBrightness(secondaryColor, -20);
+        const primaryText = isLightColor(customPrimaryColor) ? '#000' : '#fff';
+        const secondaryText = isLightColor(secondaryColor) ? '#000' : '#fff';
 
         return {
-            primaryStyle: { backgroundColor: customPrimaryColor, color: textColor },
-            secondaryStyle: { backgroundColor: customPrimaryColor, color: textColor },
-            primaryHover: hover,
-            secondaryHover: hover,
+            primaryStyle: { backgroundColor: customPrimaryColor, color: primaryText },
+            secondaryStyle: { backgroundColor: secondaryColor, color: secondaryText },
+            primaryHover,
+            secondaryHover,
             disabledStyle: getDisabledStyleFrom(customPrimaryColor),
         };
     }
 
     // Scenario 2: Only Secondary
     if (!customPrimaryColor && customSecondaryColor) {
-        const hover = adjustBrightness(customSecondaryColor, -20);
-        const textColor = isLightColor(customSecondaryColor) ? '#000' : '#fff';
+        const primaryColor = getComplementary(customSecondaryColor);
+        const secondaryHover = adjustBrightness(customSecondaryColor, -20);
+        const primaryHover = adjustBrightness(primaryColor, -20);
+        const primaryText = isLightColor(primaryColor) ? '#000' : '#fff';
+        const secondaryText = isLightColor(customSecondaryColor) ? '#000' : '#fff';
 
         return {
-            primaryStyle: { backgroundColor: '#2563eb', color: '#fff' },
-            secondaryStyle: { backgroundColor: customSecondaryColor, color: textColor },
-            primaryHover: '#1e40af',
-            secondaryHover: hover,
-            disabledStyle: getDisabledStyleFrom(customSecondaryColor),
+            primaryStyle: { backgroundColor: primaryColor, color: primaryText },
+            secondaryStyle: { backgroundColor: customSecondaryColor, color: secondaryText },
+            primaryHover,
+            secondaryHover,
+            disabledStyle: getDisabledStyleFrom(primaryColor),
         };
     }
 
