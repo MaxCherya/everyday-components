@@ -1,8 +1,8 @@
-import React, { useMemo, useState, type ReactNode } from "react";
-import { getColors } from "../../utils/colorUtils";
-import { debounce } from "../../utils/helper";
+import React, { useEffect, useMemo, useState, type ReactNode } from "react";
+import { getColors } from "../../../utils/colorUtils";
+import { debounce } from "../../../utils/helper";
 
-interface Params {
+export interface TextInputProps {
     value?: string;
     onChange?: (e: any) => void;
     placeholder?: string;
@@ -14,7 +14,7 @@ interface Params {
     disabled?: boolean;
     readonly?: boolean;
     autoFocus?: boolean;
-    regex?: boolean;
+    regex?: RegExp;
     onFocus?: () => void;
     onUnfocus?: () => void;
     customPrimaryColor?: string;
@@ -25,6 +25,7 @@ interface Params {
     hintPosition?: 'top' | 'bottom';
     labelPosition?: 'top' | 'bottom';
     error?: string;
+    setError?: React.Dispatch<React.SetStateAction<string>>;
     errorColor?: string; // in hex
     errorPosition?: 'top' | 'bottom';
     debounceMs?: number; // in ms
@@ -39,9 +40,11 @@ interface Params {
     inputClassName?: string;
     iconLeftClassName?: string;
     iconRightClassName?: string;
+    customRequiredMessage?: string;
+    customRegexMessage?: string
 }
 
-const TextInput: React.FC<Params> = ({
+const TextInput: React.FC<TextInputProps> = ({
     value,
     onChange,
     placeholder,
@@ -64,6 +67,7 @@ const TextInput: React.FC<Params> = ({
     hint,
     hintPosition = 'bottom',
     error,
+    setError,
     errorColor = '#ff3333',
     errorPosition = 'top',
     debounceMs,
@@ -77,7 +81,9 @@ const TextInput: React.FC<Params> = ({
     classNameLabel,
     inputClassName,
     iconLeftClassName,
-    iconRightClassName
+    iconRightClassName,
+    customRequiredMessage,
+    customRegexMessage
 }) => {
 
     // =========================== STATES ============================ //
@@ -85,6 +91,7 @@ const TextInput: React.FC<Params> = ({
     const [isHover, setIsHover] = useState(false);
     const [isHintHover, setIsHintHover] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
+    const [currentValue, setCurrentValue] = useState('');
     // =============================================================== //
 
     // ============================= OBJCTS ========================== //
@@ -114,6 +121,19 @@ const TextInput: React.FC<Params> = ({
     }, [onChange, debounceMs]);
 
 
+    useEffect(() => {
+        if (setError) {
+            if (required && currentValue.length < 1) {
+                setError(customRequiredMessage || 'This is a required field');
+            } else if (regex && !regex.test(currentValue)) {
+                setError(customRegexMessage || 'Input does not match the required format');
+            } else {
+                setError('');
+            }
+        }
+    }, [currentValue, regex, required, setError, customRequiredMessage]);
+
+
     return (
         <div className={`${fullWidth && 'w-full'} ${className}`}>
 
@@ -141,7 +161,7 @@ const TextInput: React.FC<Params> = ({
                 >{error}</p>
             }
 
-            <div className="relative flex flex-row align-middle">
+            <div className={`relative flex flex-row align-middle ${fullWidth && 'w-full'}`}>
                 <span className={`${sizes[size].input} absolute left-2 top-1/2 -translate-y-1/2 ${iconLeftClassName}`}
                     onClick={onLeftIconClick}
                     style={{
@@ -164,6 +184,7 @@ const TextInput: React.FC<Params> = ({
                     } else if (onChange) {
                         onChange(e);
                     }
+                    setCurrentValue(e.target.value)
                 }}
                     autoComplete={autoComplete} readOnly={readonly} autoFocus={autoFocus}
                     name={name}
@@ -178,7 +199,7 @@ const TextInput: React.FC<Params> = ({
                     }}
                     onMouseEnter={() => setIsHover(true)}
                     onMouseLeave={() => setIsHover(false)}
-                    value={value && value} className={`px-2 ${iconLeft && 'pl-9'} ${iconRight && 'pr-9'} py-1 ${variants[variant]} ${sizes[size].input} ${inputClassName}`}
+                    value={value && value} className={`px-2 ${iconLeft && 'pl-9'} ${iconRight && 'pr-9'} ${fullWidth && 'w-full'} py-1 ${variants[variant]} ${sizes[size].input} ${inputClassName}`}
                     placeholder={placeholder ? placeholder + (required ? '*' : '') : undefined}
                     style={{
                         ...(disabled
@@ -259,6 +280,15 @@ const TextInput: React.FC<Params> = ({
                     </span>
                 }
             </div>
+
+            {error &&
+                <p
+                    style={{
+                        color: errorColor
+                    }}
+                    className={`${sizes[size].hint} ${errorPosition !== 'bottom' && 'hidden'}`}
+                >{error}</p>
+            }
 
             {label &&
                 <h1 className={`${sizes[size].label} ${labelPosition !== 'bottom' && 'hidden'}  mb-1 ${classNameLabel}`} style={{ color: colorStyle.secondaryStyle.color }}>{label}</h1>

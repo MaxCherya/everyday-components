@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { GeneralButton, ToggleButton } from './components';
 import './index.css'
-import TextInput from './components/inputs/TextInput';
+import TextInput from './components/inputs/TextInput/TextInput';
 
 const App: React.FC = () => {
 
     const [disabled, setDisabled] = useState(false)
     const [testText, setTestText] = useState('')
+    const [testError, setTestError] = useState('')
 
     return (
         <div className='p-20'>
@@ -22,8 +23,8 @@ const App: React.FC = () => {
                 <ToggleButton className='ml-20 rounded-2xl' customPrimaryColor='#02E23A' noOutlines onClick={() => setDisabled(!disabled)} iconLeft='🥔' iconLeftAfter='🍟' throttleMs={3000} offLabel='Turn Off' isToggled={disabled} size='base'>Turn On</ToggleButton>
             </div>
 
-            <div className='flex flex-row gap-4 mt-20'>
-                <TextInput debounceMs={300} onChange={(e) => setTestText(e.target.value)} placeholder='Test' label='Okay' required size='lg' iconLeft={<span>🔍</span>} iconRight='✏️' hint='Testing hint should be here' onFocus={() => console.log('focused')} onUnfocus={() => console.log('unfocussed')} variant='outlined' />
+            <div className='flex flex-row gap-4 mt-20 w-3xl max-w-3xl'>
+                <TextInput debounceMs={300} fullWidth onChange={(e) => setTestText(e.target.value)} errorPosition='bottom' regex={/^\d+$/} setError={setTestError} error={testError} placeholder='Test' label='Okay' required size='lg' iconLeft={<span>🔍</span>} iconRight='✏️' hint='Testing hint should be here' onFocus={() => console.log('focused')} onUnfocus={() => console.log('unfocussed')} variant='outlined' />
                 <p>{testText}</p>
             </div>
 
