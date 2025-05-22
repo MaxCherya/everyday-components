@@ -23,6 +23,7 @@ yarn add everyday-components
 
 * **React** 17 or 18
 * Tailwind CSS
+
 ---
 
 ## 🧩 Components
@@ -31,24 +32,23 @@ Components are organized by category. Each one lives in its own folder and inclu
 
 ### 🔘 Buttons
 
-| Component             | Description                                                                                      |
-|-----------------------|--------------------------------------------------------------------------------------------------|
-| [`GeneralButton`](./src/components/btns/GeneralButton/README.md) | A polymorphic, themeable button with icons, loading, debounce/throttle, and custom colors.              |
-| [`ToggleButton`](./src/components/btns/ToggleButton/README.md)  | An adaptive toggle-style button component that can switch between two states                            |
+| Component                                                        | Description                                                                                |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [`GeneralButton`](./src/components/btns/GeneralButton/README.md) | A polymorphic, themeable button with icons, loading, debounce/throttle, and custom colors. |
+| [`ToggleButton`](./src/components/btns/ToggleButton/README.md)   | An adaptive toggle-style button component that can switch between two states               |
 
 ### 🧱 Layout (coming soon)
 
-| Component       | Description         |
-|-----------------|---------------------|
-| `Stack`         | *(Coming soon)*     |
-| `Grid`          | *(Coming soon)*     |
+| Component | Description     |
+| --------- | --------------- |
+| `Stack`   | *(Coming soon)* |
+| `Grid`    | *(Coming soon)* |
 
-### 📦 Inputs (coming soon)
+### 📦 Inputs
 
-| Component       | Description         |
-|-----------------|---------------------|
-| `TextField`     | *(Coming soon)*     |
-| `Checkbox`      | *(Coming soon)*     |
+| Component                                                  | Description                                                                                                  |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| [`TextInput`](./src/components/inputs/TextInput/README.md) | A highly customizable and accessible input field with icons, label/hint placement, debounce, and validation. |
 
 ---
 
