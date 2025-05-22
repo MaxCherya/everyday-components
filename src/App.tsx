@@ -6,6 +6,7 @@ import TextInput from './components/inputs/TextInput';
 const App: React.FC = () => {
 
     const [disabled, setDisabled] = useState(false)
+    const [testText, setTestText] = useState('')
 
     return (
         <div className='p-20'>
@@ -22,7 +23,8 @@ const App: React.FC = () => {
             </div>
 
             <div className='flex flex-row gap-4 mt-20'>
-                <TextInput placeholder='Test' onFocus={() => console.log('focused')} onUnfocus={() => console.log('unfocussed')} variant='topBorder' />
+                <TextInput debounceMs={300} onChange={(e) => setTestText(e.target.value)} placeholder='Test' label='Okay' required size='lg' iconLeft={<span>🔍</span>} iconRight='✏️' hint='Testing hint should be here' onFocus={() => console.log('focused')} onUnfocus={() => console.log('unfocussed')} variant='outlined' />
+                <p>{testText}</p>
             </div>
 
         </div>
