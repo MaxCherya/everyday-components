@@ -23,6 +23,7 @@ yarn add everyday-components
 
 * **React** 17 or 18
 * Tailwind CSS
+* Typescript
 
 ---
 
