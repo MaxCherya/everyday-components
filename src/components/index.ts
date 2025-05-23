@@ -9,3 +9,6 @@ export type { TextInputProps } from './inputs/TextInput/TextInput';
 
 export { default as PasswordInput } from './inputs/PasswordInput/PasswordInput';
 export type { PasswordInputProps } from './inputs/PasswordInput/PasswordInput';
+
+export { default as EmailInput } from './inputs/EmailInput/EmailInput';
+export type { EmailInputProps } from './inputs/EmailInput/EmailInput';

@@ -145,3 +145,29 @@ export function getPasswordStrength(password: string, options: PasswordStrengthO
 
     return { score: normalizedScore, label };
 }
+
+
+
+export interface DisifyResponse {
+    format: boolean;
+    dns: boolean;
+    disposable: boolean;
+    webmail: boolean;
+    mx: boolean;
+    domain: string;
+    email: string;
+}
+
+export async function checkEmail(email: string): Promise<DisifyResponse | null> {
+    try {
+        const res = await fetch(`https://disify.com/api/email/${email}`);
+        if (!res.ok) {
+            console.warn("Email validation failed with status", res.status);
+            return null;
+        }
+        return await res.json();
+    } catch (error) {
+        console.error("Error checking email:", error);
+        return null;
+    }
+}
