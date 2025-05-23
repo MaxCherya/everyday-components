@@ -50,6 +50,7 @@ Components are organized by category. Each one lives in its own folder and inclu
 | Component                                                  | Description                                                                                                  |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | [`TextInput`](./src/components/inputs/TextInput/README.md) | A highly customizable and accessible input field with icons, label/hint placement, debounce, and validation. |
+| [`PasswordInput`](./src/components/inputs/PasswordInput/README.md) | A secure, real-time validating password field with strength meter, breach detection, full rule control, and theming. |
 
 ---
 

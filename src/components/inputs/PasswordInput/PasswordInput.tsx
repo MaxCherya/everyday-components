@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, type ReactNode } from "react";
 import { getColors } from "../../../utils/colorUtils";
-import { debounce, isPasswordPwned } from "../../../utils/helper";
+import { debounce, getPasswordStrength, isPasswordPwned } from "../../../utils/helper";
 
 export interface PasswordInputProps {
     value?: string;
@@ -24,12 +24,16 @@ export interface PasswordInputProps {
     hintPosition?: 'top' | 'bottom';
     labelPosition?: 'top' | 'bottom';
     error?: string;
+    displayError?: boolean;
     setError?: React.Dispatch<React.SetStateAction<string>>;
     errorColor?: string; // in hex
     errorPosition?: 'top' | 'bottom';
     debounceMs?: number; // in ms
     iconLeft?: ReactNode | string;
     iconRight?: ReactNode | string;
+    passCheckPos?: 'top' | 'bottom';
+    displayStrength?: boolean;
+    displayStrengthLabel?: boolean;
     onLeftIconClick?: () => void;
     onRightIconClick?: () => void;
     // ==================================== rules
@@ -87,12 +91,16 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
     hint,
     hintPosition = 'bottom',
     error,
+    displayError = true,
     setError,
     errorColor = '#ff3333',
     errorPosition = 'top',
     debounceMs,
     iconLeft,
     iconRight,
+    passCheckPos = 'bottom',
+    displayStrength = true,
+    displayStrengthLabel = true,
     onLeftIconClick,
     onRightIconClick,
     // ==================== rules
@@ -134,6 +142,8 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
     const [isHintHover, setIsHintHover] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const [currentValue, setCurrentValue] = useState('');
+    const [passScore, setPassScore] = useState(0);
+    const [passLabel, setPassLabel] = useState('');
     // =============================================================== //
 
     // ============================= OBJCTS ========================== //
@@ -201,6 +211,13 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
             }
         }
 
+        const passStrength = () => {
+            const result = getPasswordStrength(currentValue);
+            setPassScore(result.score);
+            setPassLabel(result.label);
+        }
+
+        passStrength();
         validatePass();
     }, [currentValue, required, setError, customRequiredMessage]);
 
@@ -221,7 +238,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
                 <h1 className={`${sizes[size].label} ${labelPosition !== 'top' && 'hidden'}  mb-1 ${classNameLabel}`} style={{ color: colorStyle.secondaryStyle.color }}>{label}</h1>
             }
 
-            {error &&
+            {error && displayError &&
                 <p
                     style={{
                         color: errorColor
@@ -230,7 +247,30 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
                 >{error}</p>
             }
 
-            <div className={`relative flex flex-row align-middle ${fullWidth && 'w-full'}`}>
+            <div className={`relative flex flex-col align-middle ${fullWidth && 'w-full'}`}>
+
+                {currentValue.length > 0 && passScore >= 0 && passLabel && passCheckPos === 'top' && displayStrength && (
+                    <div className="w-full mt-2">
+                        <div className="relative w-full h-2 rounded bg-gray-300 overflow-hidden">
+                            <div
+                                className={`
+                                    h-full transition-all duration-300
+                                    ${passScore === 0 ? 'bg-red-500 w-1/5' : ''}
+                                    ${passScore === 1 ? 'bg-orange-500 w-2/5' : ''}
+                                    ${passScore === 2 ? 'bg-yellow-400 w-3/5' : ''}
+                                    ${passScore === 3 ? 'bg-green-400 w-4/5' : ''}
+                                    ${passScore === 4 ? 'bg-green-600 w-full' : ''}
+                                `}
+                            />
+                        </div>
+                        {displayStrengthLabel &&
+                            <p className="mt-1 text-sm font-medium text-gray-700 text-center">
+                                {passLabel}
+                            </p>
+                        }
+                    </div>
+                )}
+
                 <span className={`${sizes[size].input} absolute left-2 top-1/2 -translate-y-1/2 ${iconLeftClassName}`}
                     onClick={onLeftIconClick}
                     style={{
@@ -331,6 +371,29 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
                         transition: 'all 0.2s ease-in-out',
                     }}
                 />
+
+                {currentValue.length > 0 && passScore >= 0 && passLabel && passCheckPos === 'bottom' && displayStrength && (
+                    <div className="w-full mt-2">
+                        <div className="relative w-full h-2 rounded bg-gray-300 overflow-hidden">
+                            <div
+                                className={`
+                                    h-full transition-all duration-300
+                                    ${passScore === 0 ? 'bg-red-500 w-1/5' : ''}
+                                    ${passScore === 1 ? 'bg-orange-500 w-2/5' : ''}
+                                    ${passScore === 2 ? 'bg-yellow-400 w-3/5' : ''}
+                                    ${passScore === 3 ? 'bg-green-400 w-4/5' : ''}
+                                    ${passScore === 4 ? 'bg-green-600 w-full' : ''}
+                                `}
+                            />
+                        </div>
+                        {displayStrengthLabel &&
+                            <p className="mt-1 text-sm font-medium text-gray-700 text-center">
+                                {passLabel}
+                            </p>
+                        }
+                    </div>
+                )}
+
                 {iconRight &&
                     <span className={`${sizes[size].input} ml-2 absolute right-2 top-1/2 -translate-y-1/2 ${iconRightClassName}`}
                         onClick={onRightIconClick}
@@ -350,7 +413,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
                 }
             </div>
 
-            {error &&
+            {error && displayError &&
                 <p
                     style={{
                         color: errorColor

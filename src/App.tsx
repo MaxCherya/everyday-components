@@ -33,7 +33,7 @@ const App: React.FC = () => {
             </div>
 
             <div className='flex flex-row gap-4 mt-20 w-3xl max-w-3xl'>
-                <PasswordInput debounceMs={300} onChange={(e) => setPass(e.target.value)} error={passEr} setError={setPassEr} fullWidth errorPosition='bottom' placeholder='Password' label='Your pass' required size='lg' hint='Enter your pass' variant='lowBorder' />
+                <PasswordInput displayStrengthLabel={false} debounceMs={300} onChange={(e) => setPass(e.target.value)} error={passEr} setError={setPassEr} fullWidth errorPosition='bottom' placeholder='Password' label='Your pass' required size='lg' hint='Enter your pass' variant='lowBorder' />
                 <p>Your pass: {pass}</p>
             </div>
 
