@@ -8,7 +8,7 @@ Includes reusable, customizable UI components that work with or without Tailwind
 ## 📦 Installation
 
 ```bash
-npm install everyday-components
+npm install MaxCherya/everyday-components
 ````
 
 or
